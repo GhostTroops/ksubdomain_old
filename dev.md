@@ -6,12 +6,12 @@ package main
 
 import (
 	"context"
-	"github.com/boy-hack/ksubdomain/core/gologger"
-	"github.com/boy-hack/ksubdomain/core/options"
-	"github.com/boy-hack/ksubdomain/runner"
-	"github.com/boy-hack/ksubdomain/runner/outputter"
-	"github.com/boy-hack/ksubdomain/runner/outputter/output"
-	"github.com/boy-hack/ksubdomain/runner/processbar"
+	"github.com/hktalent/ksubdomain/core/gologger"
+	"github.com/hktalent/ksubdomain/core/options"
+	"github.com/hktalent/ksubdomain/runner"
+	"github.com/hktalent/ksubdomain/runner/outputter"
+	"github.com/hktalent/ksubdomain/runner/outputter/output"
+	"github.com/hktalent/ksubdomain/runner/processbar"
 	"strings"
 )
 

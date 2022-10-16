@@ -1,9 +1,9 @@
 package output
 
 import (
-	"github.com/boy-hack/ksubdomain/core"
-	"github.com/boy-hack/ksubdomain/core/gologger"
-	"github.com/boy-hack/ksubdomain/runner/result"
+	"github.com/hktalent/ksubdomain/core"
+	"github.com/hktalent/ksubdomain/core/gologger"
+	"github.com/hktalent/ksubdomain/runner/result"
 	"strings"
 )
 

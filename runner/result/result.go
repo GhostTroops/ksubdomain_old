@@ -1,6 +1,6 @@
 package result
 
 type Result struct {
-	Subdomain string
-	Answers   []string
+	Subdomain string   `csv:"subdomain"`
+	Answers   []string `csv:"answers"`
 }

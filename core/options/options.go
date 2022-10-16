@@ -2,12 +2,12 @@ package options
 
 import (
 	"fmt"
-	"github.com/boy-hack/ksubdomain/core"
-	"github.com/boy-hack/ksubdomain/core/device"
-	"github.com/boy-hack/ksubdomain/core/gologger"
-	"github.com/boy-hack/ksubdomain/runner/outputter"
-	"github.com/boy-hack/ksubdomain/runner/processbar"
 	"github.com/google/gopacket/layers"
+	"github.com/hktalent/ksubdomain/core"
+	"github.com/hktalent/ksubdomain/core/device"
+	"github.com/hktalent/ksubdomain/core/gologger"
+	"github.com/hktalent/ksubdomain/runner/outputter"
+	"github.com/hktalent/ksubdomain/runner/processbar"
 	"strconv"
 	"strings"
 )
@@ -81,8 +81,6 @@ func (opt *Options) Check() {
 	if opt.Silent {
 		gologger.MaxLevel = gologger.Silent
 	}
-
-	core.ShowBanner()
 
 }
 func DnsType(s string) (layers.DNSType, error) {

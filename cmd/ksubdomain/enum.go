@@ -3,14 +3,14 @@ package main
 import (
 	"bufio"
 	"context"
-	"github.com/boy-hack/ksubdomain/core"
-	"github.com/boy-hack/ksubdomain/core/dns"
-	"github.com/boy-hack/ksubdomain/core/gologger"
-	"github.com/boy-hack/ksubdomain/core/options"
-	"github.com/boy-hack/ksubdomain/runner"
-	"github.com/boy-hack/ksubdomain/runner/outputter"
-	"github.com/boy-hack/ksubdomain/runner/outputter/output"
-	"github.com/boy-hack/ksubdomain/runner/processbar"
+	"github.com/hktalent/ksubdomain/core"
+	"github.com/hktalent/ksubdomain/core/dns"
+	"github.com/hktalent/ksubdomain/core/gologger"
+	"github.com/hktalent/ksubdomain/core/options"
+	"github.com/hktalent/ksubdomain/runner"
+	"github.com/hktalent/ksubdomain/runner/outputter"
+	"github.com/hktalent/ksubdomain/runner/outputter/output"
+	"github.com/hktalent/ksubdomain/runner/processbar"
 	"github.com/urfave/cli/v2"
 	"math/rand"
 	"os"
@@ -164,6 +164,14 @@ var enumCommand = &cli.Command{
 				gologger.Fatalf(err.Error())
 			}
 			writer = append(writer, fileWriter)
+		}
+		if c.Bool("csv") {
+			fileWriter, err := output.NewCsvOutImp(c.String("output"), onlyDomain, true)
+			if err != nil {
+				gologger.Fatalf(err.Error())
+			}
+			writer = append(writer, fileWriter)
+
 		}
 		if c.Bool("not-print") {
 			processBar = nil

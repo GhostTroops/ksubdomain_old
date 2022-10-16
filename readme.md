@@ -1,10 +1,8 @@
-ksubdomain是一款基于无状态的子域名爆破工具，类似无状态端口扫描，支持在Windows/Linux/Mac上进行快速的DNS爆破，拥有重发机制不用担心漏包。
-
-hacking8信息流的src资产收集 https://i.hacking8.com/src/ 用的是ksubdomain
+(该仓库为二次集成开发、分布式、多任务而重构)
 
 ![](image.gif)
 ## 安装
-1. 下载二进制 https://github.com/boy-hack/ksubdomain/releases
+1. 下载二进制 https://github.com/hktalent/ksubdomain/releases
 2. 安装libpcap环境
    - Windows
      下载`npcap`驱动，winpcap驱动有人反馈无效
@@ -16,7 +14,7 @@ hacking8信息流的src资产收集 https://i.hacking8.com/src/ 用的是ksubdom
 ### 快速安装
 需要`go 1.17`以上版本并安装`libpcap`环境，运行以下命令
 ```
-go install -v github.com/boy-hack/ksubdomain/cmd/ksubdomain@latest
+go install -v github.com/hktalent/ksubdomain/cmd/ksubdomain@latest
 ```
 
 ## Useage

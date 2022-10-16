@@ -2,7 +2,7 @@ package runner
 
 import (
 	"context"
-	"github.com/boy-hack/ksubdomain/runner/statusdb"
+	"github.com/hktalent/ksubdomain/runner/statusdb"
 	"sync/atomic"
 	"time"
 )

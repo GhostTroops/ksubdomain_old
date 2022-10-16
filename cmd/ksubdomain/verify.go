@@ -3,13 +3,13 @@ package main
 import (
 	"bufio"
 	"context"
-	"github.com/boy-hack/ksubdomain/core"
-	"github.com/boy-hack/ksubdomain/core/gologger"
-	"github.com/boy-hack/ksubdomain/core/options"
-	"github.com/boy-hack/ksubdomain/runner"
-	"github.com/boy-hack/ksubdomain/runner/outputter"
-	"github.com/boy-hack/ksubdomain/runner/outputter/output"
-	"github.com/boy-hack/ksubdomain/runner/processbar"
+	"github.com/hktalent/ksubdomain/core"
+	"github.com/hktalent/ksubdomain/core/gologger"
+	"github.com/hktalent/ksubdomain/core/options"
+	"github.com/hktalent/ksubdomain/runner"
+	"github.com/hktalent/ksubdomain/runner/outputter"
+	"github.com/hktalent/ksubdomain/runner/outputter/output"
+	"github.com/hktalent/ksubdomain/runner/processbar"
 	"github.com/urfave/cli/v2"
 	"os"
 )
@@ -46,6 +46,11 @@ var commonFlags = []cli.Flag{
 	&cli.BoolFlag{
 		Name:  "silent",
 		Usage: "使用后屏幕将仅输出域名",
+		Value: false,
+	},
+	&cli.BoolFlag{
+		Name:  "csv",
+		Usage: "输出格式为csv",
 		Value: false,
 	},
 	&cli.IntFlag{

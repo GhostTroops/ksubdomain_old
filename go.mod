@@ -1,6 +1,6 @@
-module github.com/boy-hack/ksubdomain
+module github.com/hktalent/ksubdomain
 
-go 1.17
+go 1.18
 
 require (
 	github.com/google/gopacket v1.1.19
@@ -8,18 +8,18 @@ require (
 	github.com/mattn/go-colorable v0.1.12
 	github.com/miekg/dns v1.1.47
 	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5
-	github.com/urfave/cli/v2 v2.3.0
+	github.com/urfave/cli/v2 v2.19.2
 	go.uber.org/ratelimit v0.2.0
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
 	github.com/andres-erbsen/clock v0.0.0-20160526145045-9e14626cd129 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/russross/blackfriday/v2 v2.0.1 // indirect
-	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
+	github.com/russross/blackfriday/v2 v2.1.0 // indirect
+	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	golang.org/x/mod v0.4.2 // indirect
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect
 	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9 // indirect
