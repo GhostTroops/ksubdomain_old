@@ -1,4 +1,4 @@
-package main
+package ksubdomain
 
 import (
 	"github.com/hktalent/ksubdomain/core/options"

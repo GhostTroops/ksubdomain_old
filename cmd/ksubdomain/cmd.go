@@ -1,15 +1,13 @@
-package main
+package ksubdomain
 
 import (
-	util "github.com/hktalent/go-utils"
 	"github.com/hktalent/ksubdomain/core/conf"
 	"github.com/hktalent/ksubdomain/core/gologger"
 	"github.com/urfave/cli/v2"
 	"os"
 )
 
-func main() {
-	util.DoInitAll()
+func Main() {
 	//os.Args = append([]string{""}, strings.Split("enum -d 5M -o superbet.ro.json -d superbet.ro -f /Users/51pwn/MyWork/scan4all/config/database/subdomain.txt", " ")...)
 	app := &cli.App{
 		Name:    conf.AppName,
@@ -26,6 +24,4 @@ func main() {
 	if err != nil {
 		gologger.Fatalf(err.Error())
 	}
-	util.Wg.Wait()
-	util.CloseAll()
 }
