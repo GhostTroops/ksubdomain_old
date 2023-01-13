@@ -13,7 +13,7 @@ builds:
     env:
       - CGO_ENABLED=1
 #      - CGO_LDFLAGS="-Wl,-static -L/usr/lib/x86_64-linux-gnu/libpcap.a -lpcap -Wl,-Bdynamic"
-    main: cmd/ksubdomain/*.go
+    main: cmd/ksubdomain
     goos:
       - linux
     goarch:
