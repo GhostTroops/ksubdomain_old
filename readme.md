@@ -128,7 +128,7 @@ go build -o ksubdomain cmd/ksubdomain/*
 sudo chgrp staff /dev/bpf*
 cat $HOME/MyWork/bounty-targets-data/data/hackerone_data.json|jq ".[].targets.in_scope[0].asset_identifier"|grep -v 'null'
 cat $HOME/MyWork/bounty-targets-data/data/hackerone_data.json|jq ".[].targets.in_scope[0].asset_identifier"|grep '"\*\.'|sed 's/"//g'|sed 's/^\*\.//g' >lists.txt
-echo $PPSSWWDD| sudo -S ./ksubdomain enum -d 5M -o superbet.ro.json --dl lists.txt -f $HOME/MyWork/scan4all/config/database/subdomain.txt
+echo $PPSSWWDD| sudo -S ./ksubdomain enum -d 5M --dl lists.txt -f $HOME/MyWork/scan4all/config/database/subdomain.txt
 ```
 
 ## 特性和Tips
