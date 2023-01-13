@@ -119,6 +119,14 @@ OPTIONS:
 echo "baidu.com"|./ksubdomain e --stdin
 ```
 
+# How ...
+- pcap打开失败:enxx: You don't have permission to capture on that device ((cannot open BPF device) /dev/bpf0: Permission denied)
+```
+go build -o ksubdomain cmd/ksubdomain/*
+sudo chgrp staff /dev/bpf*
+sudo ./ksubdomain enum -d 5M -o superbet.ro.json -d superbet.ro -f $HOME/MyWork/scan4all/config/database/subdomain.txt
+```
+
 ## 特性和Tips
 
 - 无状态爆破，有失败重发机制，速度极快
