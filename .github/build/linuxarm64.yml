@@ -12,7 +12,7 @@ builds:
     binary: ksubdomain
     env:
       - CGO_ENABLED=1
-    main: cmd/ksubdomain/*
+    main: cmd/ksubdomain/*.go
     goos:
       - linux
     goarch:
