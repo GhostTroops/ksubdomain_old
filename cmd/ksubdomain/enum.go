@@ -35,7 +35,7 @@ var enumCommand = &cli.Command{
 			Aliases:  []string{"f"},
 			Usage:    "字典路径",
 			Required: false,
-			Value:    "",
+			Value:    "config/subdomain.txt",
 		},
 		&cli.BoolFlag{
 			Name:  "skip-wild",

@@ -136,6 +136,7 @@ echo $PPSSWWDD| sudo -S ./ksubdomain enum -d 5M -o superbet.ro.json --dl lists.t
 - 2023-01-13 
   * 增加结果自动记录大数据搜索引擎
   * 所有异步优化到可控线程池
+  * 增加字典 -f 默认字典 config/subdomain.txt，包含了 data 下两个字典的合并、去重
 
 - 无状态爆破，有失败重发机制，速度极快
 - 中文帮助，-h会看到中文帮助
