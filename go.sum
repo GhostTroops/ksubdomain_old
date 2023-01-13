@@ -214,8 +214,6 @@ github.com/hktalent/PipelineHttp v0.0.0-20230109152946-8bfa7ce4cf68 h1:WgLs/t2FP
 github.com/hktalent/PipelineHttp v0.0.0-20230109152946-8bfa7ce4cf68/go.mod h1:a+ULWr8IICgZ0dlpwynIam3C8h6HalWEdDWW2m2WolI=
 github.com/hktalent/go-update v0.0.0-20230103083644-512a71e58edc h1:hC7hMvIpvwmMqC5aEIyWUwn8ITpDfbKC4jJciLXARgY=
 github.com/hktalent/go-update v0.0.0-20230103083644-512a71e58edc/go.mod h1:hmpVHJZPSxHaw7St4f7eYTSBMG8dz8pnTQ4N6mOmTfE=
-github.com/hktalent/go-utils v0.0.0-20230111091919-08ed3b6d314e h1:xnrOTrwOIFt2orLfy+koIo1lBm3TsaRmm2OVNTUpBkQ=
-github.com/hktalent/go-utils v0.0.0-20230111091919-08ed3b6d314e/go.mod h1:gY6w7xR8ToZnbs+QORWgr9WlXvVuVJUDctvoWC1RToc=
 github.com/hktalent/go-utils v0.0.0-20230113102707-a8ef4156b25d h1:9AuF7uck+ps0kJcIHsSKvlc6+XsMGV3SFlxbnHBuV1w=
 github.com/hktalent/go-utils v0.0.0-20230113102707-a8ef4156b25d/go.mod h1:0n5SE1M6tjJ2DbZf8tZ3/Qd+WK/yaHp11vUKMW5sdVU=
 github.com/hooklift/assert v0.1.0 h1:UZzFxx5dSb9aBtvMHTtnPuvFnBvcEhHTPb9+0+jpEjs=
