@@ -1,5 +1,5 @@
 {
   "esUrl": "https://127.0.0.1:8081/%s_index/_doc/%s",
   "enableEsSv": true,
-  "esthread": 128
+  "esthread": 64
 }

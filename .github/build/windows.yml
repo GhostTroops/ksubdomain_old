@@ -10,7 +10,7 @@ project_name: ksubdomain
 builds:
   - id: ksubdomain-windows
     ldflags:
-      - -s -w
+      - -s -w -X main.Version={{.Version}}
     binary: ksubdomain
     env:
       - CGO_ENABLED=1
