@@ -1,5 +1,6 @@
 .idea
-go.sum
 test2
+.DbCache
 ksubdomain.yaml
 dist/
+uperbet.ro.json
