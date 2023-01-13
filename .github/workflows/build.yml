@@ -22,7 +22,7 @@ jobs:
           go-version: 1.18
       - name: Install Dependences
         run: |
-          brew install libpcap upx gcc
+          brew install libpcap
 #          git submodule update --init --recursive --remote
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
@@ -51,7 +51,7 @@ jobs:
           sudo apt install -yy libpcap-dev
         env:
            GOENABLE: 1
-           CGO_LDFLAGS: "-Wl,-static -L/usr/lib/x86_64-linux-gnu/libpcap.a -lpcap -Wl,-Bdynamic"
+#           CGO_LDFLAGS: "-Wl,-static -L/usr/lib/x86_64-linux-gnu/libpcap.a -lpcap -Wl,-Bdynamic"
 #          git submodule update --init --recursive --remote
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
