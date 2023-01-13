@@ -42,15 +42,13 @@ jobs:
           fetch-depth: 0
       - name: Checkout submodules
         run: git submodule update --init --recursive
-      - name: Install cross-compiler for linux/arm64
-        run: sudo apt-get -y install libpcap-dev gcc
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
           go-version: 1.18
       - name: Install Dependences
         run: |
-          sudo apt install -yy libpcap-dev upx gcc
+          sudo apt install -yy libpcap-dev
         env:
            GOENABLE: 1
            CGO_LDFLAGS: "-Wl,-static -L/usr/lib/x86_64-linux-gnu/libpcap.a -lpcap -Wl,-Bdynamic"
