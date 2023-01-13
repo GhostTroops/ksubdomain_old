@@ -2,6 +2,7 @@ package runner
 
 import (
 	"context"
+	util "github.com/hktalent/go-utils"
 	"github.com/hktalent/ksubdomain/core/dns"
 	"github.com/hktalent/ksubdomain/core/gologger"
 	"github.com/hktalent/ksubdomain/core/options"
@@ -20,12 +21,12 @@ func TestRunner(t *testing.T) {
 		t.Fatal(err)
 	}
 	domainChanel := make(chan string)
-	go func() {
+	util.DefaultPool.Submit(func() {
 		for _, d := range domains {
 			domainChanel <- d
 		}
 		close(domainChanel)
-	}()
+	})
 	opt := &options.Options{
 		Rate:        options.Band2Rate("1m"),
 		Domain:      domainChanel,

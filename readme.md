@@ -124,10 +124,13 @@ echo "baidu.com"|./ksubdomain e --stdin
 ```
 go build -o ksubdomain cmd/ksubdomain/*
 sudo chgrp staff /dev/bpf*
-sudo ./ksubdomain enum -d 5M -o superbet.ro.json -d superbet.ro -f $HOME/MyWork/scan4all/config/database/subdomain.txt
+echo $PPSSWWDD| sudo -S ./ksubdomain enum -d 5M -o superbet.ro.json -d superbet.ro -f $HOME/MyWork/scan4all/config/database/subdomain.txt
 ```
 
 ## 特性和Tips
+- 2023-01-13 
+  * 增加结果自动记录大数据搜索引擎
+  * 所有异步优化到可控线程池
 
 - 无状态爆破，有失败重发机制，速度极快
 - 中文帮助，-h会看到中文帮助

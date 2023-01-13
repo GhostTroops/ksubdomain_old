@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"context"
+	util "github.com/hktalent/go-utils"
 	"github.com/hktalent/ksubdomain/core"
 	"github.com/hktalent/ksubdomain/core/dns"
 	"github.com/hktalent/ksubdomain/core/gologger"
@@ -122,7 +123,7 @@ var enumCommand = &cli.Command{
 		}
 
 		render := make(chan string)
-		go func() {
+		util.DefaultPool.Submit(func() {
 			defer close(render)
 			for _, sub := range subdomainDict {
 				for _, domain := range domains {
@@ -136,7 +137,7 @@ var enumCommand = &cli.Command{
 					}
 				}
 			}
-		}()
+		})
 		domainTotal = len(subdomainDict) * len(domains)
 		if len(levelDomains) > 0 {
 			domainTotal *= len(levelDomains)

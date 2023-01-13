@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"context"
+	util "github.com/hktalent/go-utils"
 	"github.com/hktalent/ksubdomain/core"
 	"github.com/hktalent/ksubdomain/core/gologger"
 	"github.com/hktalent/ksubdomain/core/options"
@@ -127,7 +128,7 @@ var verifyCommand = &cli.Command{
 			}
 			total += t
 		}
-		go func() {
+		util.DefaultPool.Submit(func() {
 			for _, line := range domains {
 				render <- line
 			}
@@ -144,7 +145,7 @@ var verifyCommand = &cli.Command{
 				}
 			}
 			close(render)
-		}()
+		})
 
 		onlyDomain := c.Bool("only-domain")
 		if c.String("output") != "" {

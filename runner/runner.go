@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
+	util "github.com/hktalent/go-utils"
 	"github.com/hktalent/ksubdomain/core"
 	"github.com/hktalent/ksubdomain/core/device"
 	"github.com/hktalent/ksubdomain/core/gologger"
@@ -134,15 +135,17 @@ func (r *runner) printStatus() {
 func (r *runner) RunEnumeration(ctx context.Context) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
-	go r.recvChanel(ctx) // 启动接收线程
-	go r.sendCycle()     // 发送线程
-	go r.handleResult()  // 处理结果，打印输出
-	go func() {
+	util.DefaultPool.Submit(func() {
+		r.recvChanel(ctx)
+	}) // 启动接收线程
+	util.DefaultPool.Submit(r.sendCycle)    // 发送线程
+	util.DefaultPool.Submit(r.handleResult) // 处理结果，打印输出
+	util.DefaultPool.Submit(func() {
 		for domain := range r.options.Domain {
 			r.sender <- domain
 		}
 		r.fisrtloadChanel <- "ok"
-	}()
+	})
 	var isLoadOver bool = false // 是否加载文件完毕
 	t := time.NewTicker(1 * time.Second)
 	defer t.Stop()
@@ -158,7 +161,9 @@ func (r *runner) RunEnumeration(ctx context.Context) {
 				}
 			}
 		case <-r.fisrtloadChanel:
-			go r.retry(ctx) // 遍历hm，依次重试
+			util.DefaultPool.Submit(func() {
+				r.retry(ctx) // 遍历hm，依次重试
+			})
 			isLoadOver = true
 		case <-ctx.Done():
 			return

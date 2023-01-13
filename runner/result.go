@@ -5,27 +5,22 @@ import (
 )
 
 // 记录日志到 大数据搜索引擎
-func SendEsLog(o interface{}) {
+func SendEsLog(m1 map[string]interface{}) {
 	if 0 == len(util.EsUrl) {
 		return
 	}
 
-	var m1 = map[string]interface{}{}
-	if data, err := util.Json.Marshal(o); nil == err {
-		if nil == util.Json.Unmarshal(data, &m1) {
-			m1["tags"] = "subdomain"
-			m1["tools"] = "ksubdomain"
-			szId := util.GetSha1(&m1)
-			util.SendReq(&m1, szId, "osint")
-		}
-	}
+	m1["tags"] = "subdomain"
+	szId := util.GetSha1(&m1)
+	util.SendReq(&m1, szId, "ksubdomain")
+
 }
 
 func (r *runner) handleResult() {
 	for result := range r.recver {
-		x1 := &result
-		util.DefaultPool.Submit(func() {
-			SendEsLog(x1)
+		var m1 = map[string]interface{}{"ip": result.Answers, "subdomain": result.Subdomain}
+		util.DoSyncFunc(func() {
+			SendEsLog(m1)
 		})
 		for _, out := range r.options.Writer {
 			_ = out.WriteDomainResult(result)

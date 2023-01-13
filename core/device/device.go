@@ -6,6 +6,7 @@ import (
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
+	util "github.com/hktalent/go-utils"
 	"github.com/hktalent/ksubdomain/core"
 	"github.com/hktalent/ksubdomain/core/gologger"
 	"net"
@@ -34,61 +35,63 @@ func AutoGetDevices() *EtherTable {
 	// 在初始上下文的基础上创建一个有取消功能的上下文
 	ctx, cancel := context.WithCancel(ctx)
 	for _, drviceName := range keys {
-		go func(drviceName string, domain string, ctx context.Context) {
-			var (
-				snapshot_len int32         = 1024
-				promiscuous  bool          = false
-				timeout      time.Duration = -1 * time.Second
-				handle       *pcap.Handle
-			)
-			var err error
-			handle, err = pcap.OpenLive(
-				drviceName,
-				snapshot_len,
-				promiscuous,
-				timeout,
-			)
-			if err != nil {
-				gologger.Errorf("pcap打开失败:%s\n", err.Error())
-				return
-			}
-			defer handle.Close()
-			// Use the handle as a packet source to process all packets
-			packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
-			for {
-				select {
-				case <-ctx.Done():
+		func(drviceName string, domain string, ctx context.Context) {
+			util.DefaultPool.Submit(func() {
+				var (
+					snapshot_len int32         = 1024
+					promiscuous  bool          = false
+					timeout      time.Duration = -1 * time.Second
+					handle       *pcap.Handle
+				)
+				var err error
+				handle, err = pcap.OpenLive(
+					drviceName,
+					snapshot_len,
+					promiscuous,
+					timeout,
+				)
+				if err != nil {
+					gologger.Errorf("pcap打开失败:%s\n", err.Error())
 					return
-				default:
-					packet, err := packetSource.NextPacket()
-					gologger.Printf(".")
-					if err != nil {
-						continue
-					}
-					if dnsLayer := packet.Layer(layers.LayerTypeDNS); dnsLayer != nil {
-						dns, _ := dnsLayer.(*layers.DNS)
-						if !dns.QR {
+				}
+				defer handle.Close()
+				// Use the handle as a packet source to process all packets
+				packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
+				for {
+					select {
+					case <-ctx.Done():
+						return
+					default:
+						packet, err := packetSource.NextPacket()
+						gologger.Printf(".")
+						if err != nil {
 							continue
 						}
-						for _, v := range dns.Questions {
-							if string(v.Name) == domain {
-								ethLayer := packet.Layer(layers.LayerTypeEthernet)
-								if ethLayer != nil {
-									eth := ethLayer.(*layers.Ethernet)
-									etherTable := EtherTable{
-										SrcIp:  data[drviceName],
-										Device: drviceName,
-										SrcMac: SelfMac(eth.DstMAC),
-										DstMac: SelfMac(eth.SrcMAC),
+						if dnsLayer := packet.Layer(layers.LayerTypeDNS); dnsLayer != nil {
+							dns, _ := dnsLayer.(*layers.DNS)
+							if !dns.QR {
+								continue
+							}
+							for _, v := range dns.Questions {
+								if string(v.Name) == domain {
+									ethLayer := packet.Layer(layers.LayerTypeEthernet)
+									if ethLayer != nil {
+										eth := ethLayer.(*layers.Ethernet)
+										etherTable := EtherTable{
+											SrcIp:  data[drviceName],
+											Device: drviceName,
+											SrcMac: SelfMac(eth.DstMAC),
+											DstMac: SelfMac(eth.SrcMAC),
+										}
+										signal <- &etherTable
+										return
 									}
-									signal <- &etherTable
-									return
 								}
 							}
 						}
 					}
 				}
-			}
+			})
 		}(drviceName, domain, ctx)
 	}
 	for {
