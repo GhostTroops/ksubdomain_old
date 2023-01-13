@@ -8,11 +8,11 @@ project_name: ksubdomain
 builds:
   - id: ksubdomain-darwin
     ldflags:
-      - -s -w -X main.Version={{.Version}}
+      - -s -w
     binary: ksubdomain
     env:
       - CGO_ENABLED=1
-    main: cmd/ksubdomain/
+    main: cmd/ksubdomain/*
     goos:
       - darwin
     goarch:

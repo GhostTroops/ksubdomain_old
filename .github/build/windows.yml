@@ -10,14 +10,14 @@ project_name: ksubdomain
 builds:
   - id: ksubdomain-windows
     ldflags:
-      - -s -w -X main.Version={{.Version}}
+      - -s -w
     binary: ksubdomain
     env:
       - CGO_ENABLED=1
 #      - CGO_LDFLAGS="-Wl,-static -L/usr/lib/x86_64-linux-gnu/libpcap.a -lpcap -Wl,-Bdynamic"
 #      - CC=x86_64-w64-mingw32-gcc
 #      - CXX=x86_64-w64-mingw32-g++
-    main: cmd/ksubdomain/
+    main: cmd/ksubdomain/*
     goos:
       - windows
     goarch:
