@@ -6,6 +6,7 @@ import (
 
 func (r *runner) handleResult() {
 	go util.DoRunning()
+	defer util.CloseLogBigDb()
 
 	for result := range r.recver {
 		var m1 = map[string]interface{}{"ip": result.Answers, "subdomain": result.Subdomain, "tags": "subdomain"}
@@ -15,5 +16,4 @@ func (r *runner) handleResult() {
 		}
 		r.printStatus()
 	}
-	util.CloseLogBigDb()
 }
