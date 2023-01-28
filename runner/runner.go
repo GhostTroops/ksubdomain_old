@@ -16,6 +16,7 @@ import (
 	"go.uber.org/ratelimit"
 	"math"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 )
@@ -157,6 +158,9 @@ func (r *runner) RunEnumeration(ctx context.Context) {
 				if r.hm.Length() <= 0 {
 					gologger.Printf("\n")
 					gologger.Infof("扫描完毕")
+					util.CloseLogBigDb()
+					<-time.After(3 * time.Second)
+					os.Exit(0)
 					return
 				}
 			}
