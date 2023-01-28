@@ -8,8 +8,8 @@ import (
 	"os"
 )
 
-// go tool pprof -seconds=60 -http=:9999 https://127.0.0.1:6060/debug/pprof/heap
-// go tool pprof https://127.0.0.1:6060/debug/pprof/profile?seconds=60
+// go tool pprof -seconds=60 -http=:9999 http://127.0.0.1:6060/debug/pprof/heap
+// go tool pprof http://127.0.0.1:6060/debug/pprof/profile?seconds=60
 func main() {
 	os.RemoveAll("ksubdomain.yaml")
 	util.DoInitAll()
