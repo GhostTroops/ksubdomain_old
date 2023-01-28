@@ -51,7 +51,7 @@ var enumCommand = &cli.Command{
 			Name:    "level",
 			Aliases: []string{"l"},
 			Usage:   "枚举几级域名，默认为2，二级域名",
-			Value:   3,
+			Value:   2,
 		},
 		&cli.StringFlag{
 			Name:    "level-dict",

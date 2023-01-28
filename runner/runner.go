@@ -139,7 +139,7 @@ func (r *runner) RunEnumeration(ctx context.Context) {
 	util.DefaultPool.Submit(func() {
 		r.recvChanel(ctx)
 	}) // 启动接收线程
-	util.DefaultPool.Submit(r.sendCycle)    // 发送线程
+	util.DoSyncFunc(r.sendCycle)            // 发送线程
 	util.DefaultPool.Submit(r.handleResult) // 处理结果，打印输出
 	util.DefaultPool.Submit(func() {
 		for domain := range r.options.Domain {
