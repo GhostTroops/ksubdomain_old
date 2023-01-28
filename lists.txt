@@ -10,8 +10,7 @@ boredapeyachtclub.com
 prod.brazil.tkn.zone
 goteleport.com
 arnholdinstitute.org
-myshoplaza.com/admin
-*
+myshoplaza.com
 getroman.com
 deribit.com
 fidelity.com
@@ -171,4 +170,4 @@ srvcs.tumblr.com
 irccloud-cdn.com
 cbhq.net
 quip.com
-vpn.hackerone.net
+hackerone.com
