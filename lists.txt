@@ -43,7 +43,7 @@ ups.com
 proctor.io
 aktia.fi
 leafnow.com
-lumiradx.com/*
+lumiradx.com
 blackrock.com
 clubhouse.com
 tva.com
@@ -86,7 +86,7 @@ pubg.com
 a.exodus.io
 bolstr.com
 thomsonreuters.com
-cornershop.io/*
+cornershop.io
 accountscore.co.uk
 line-apps.com
 worklytics.co
@@ -171,3 +171,5 @@ irccloud-cdn.com
 cbhq.net
 quip.com
 hackerone.com
+gov.cn
+edu.cn

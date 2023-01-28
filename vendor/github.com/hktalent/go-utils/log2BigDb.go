@@ -1,12 +1,14 @@
 package go_utils
 
+import "log"
+
 // 记录日志到 大数据搜索引擎
 func SendEsLog(m1 interface{}) {
 	if 0 == len(EsUrl) {
 		return
 	}
 	szId := "xxx"
-	SendReq(&m1, szId, "ksubdomain")
+	SendReq(&m1, szId, ESaveType(GetVal("toolType")))
 
 }
 
@@ -23,6 +25,7 @@ func DoSaves() {
 	}
 	DoSyncFunc(func() {
 		SendEsLog(&oS)
+		log.Println("DoSaves", n)
 	})
 }
 
@@ -46,5 +49,10 @@ func DoRunning() {
 }
 
 func CloseLogBigDb() {
+	DoSaves()
 	close(bOk)
+	defer func() {
+		close(bDo)
+		close(oR)
+	}()
 }

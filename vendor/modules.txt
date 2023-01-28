@@ -128,7 +128,7 @@ github.com/hktalent/PipelineHttp
 github.com/hktalent/go-update
 github.com/hktalent/go-update/progress
 github.com/hktalent/go-update/stores/github
-# github.com/hktalent/go-utils v0.0.0-20230114070842-ea4c8d799be5
+# github.com/hktalent/go-utils v0.0.0-20230128055550-709d959b25e6
 ## explicit; go 1.19
 github.com/hktalent/go-utils
 # github.com/jinzhu/inflection v1.0.0
