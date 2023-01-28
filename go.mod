@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/google/gopacket v1.1.19
-	github.com/hktalent/go-utils v0.0.0-20230114070842-ea4c8d799be5
+	github.com/hktalent/go-utils v0.0.0-20230128055550-709d959b25e6
 	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/mattn/go-colorable v0.1.12
 	github.com/miekg/dns v1.1.50

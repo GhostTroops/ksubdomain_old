@@ -340,6 +340,7 @@ func CloseAll() {
 	for _, ckb := range CloseCbk {
 		ckb()
 	}
+	ReleaseFunc.DoFunc()
 	// clear
 	// 程序都结束了，没有必要清理内存了
 	// fingerprint.ClearData()
