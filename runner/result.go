@@ -2,14 +2,15 @@ package runner
 
 import (
 	util "github.com/hktalent/go-utils"
+	"strings"
 )
 
 func (r *runner) handleResult() {
 	go util.DoRunning()
 	defer util.CloseLogBigDb()
-
+	var szSkp = "0.0.0.1"
 	for result := range r.recver {
-		if 1 == len(result.Answers) && "0.0.0.1" == result.Answers[0] {
+		if 1 == len(result.Answers) && szSkp == result.Answers[0] || -1 < strings.Index(result.Subdomain, szSkp) {
 			continue
 		}
 		var m1 = map[string]interface{}{"ip": result.Answers, "subdomain": result.Subdomain, "tags": "subdomain"}
