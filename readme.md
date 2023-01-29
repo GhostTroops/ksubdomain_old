@@ -136,6 +136,7 @@ echo $PPSSWWDD| sudo -S ./ksubdomain enum -b 5M --dl lists.txt -f $HOME/MyWork/s
   * 增加结果自动记录大数据搜索引擎
   * 所有异步优化到可控线程池
   * 增加字典 -f 默认字典 config/subdomain.txt，包含了 data 下两个字典的合并、去重
+  * 优化内存开销，降低到600M内，原来到版本内存泄漏、扫描结果超过200万后内存泄漏到 > 30G
 
 - 无状态爆破，有失败重发机制，速度极快
 - 中文帮助，-h会看到中文帮助
