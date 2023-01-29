@@ -13,7 +13,7 @@ func SendEsLog(m1 interface{}) {
 }
 
 var bOk = make(chan struct{})
-var bDo = make(chan struct{})
+var bDo = make(chan struct{}, 1)
 var oR = make(chan interface{}, 5000)
 
 func DoSaves() {
@@ -23,10 +23,12 @@ func DoSaves() {
 		oS = append(oS, <-oR)
 		n--
 	}
-	DoSyncFunc(func() {
-		SendEsLog(&oS)
-		log.Println("DoSaves", n)
-	})
+	if 0 < len(oS) {
+		DoSyncFunc(func() {
+			SendEsLog(&oS)
+			log.Println("DoSaves", n)
+		})
+	}
 }
 
 func PushLog(o interface{}) {
