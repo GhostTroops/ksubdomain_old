@@ -3,6 +3,7 @@ module github.com/hktalent/ksubdomain
 go 1.18
 
 require (
+	github.com/dgraph-io/badger v1.6.2
 	github.com/google/gopacket v1.1.19
 	github.com/hktalent/go-utils v0.0.0-20230129010438-d9cd940d1baa
 	github.com/logrusorgru/aurora v2.0.3+incompatible
@@ -25,7 +26,6 @@ require (
 	github.com/coreos/etcd v3.3.27+incompatible // indirect
 	github.com/corpix/uarand v0.2.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
-	github.com/dgraph-io/badger v1.6.2 // indirect
 	github.com/dgraph-io/ristretto v0.1.1 // indirect
 	github.com/dsnet/compress v0.0.1 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
