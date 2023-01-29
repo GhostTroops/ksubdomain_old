@@ -57,7 +57,7 @@ var enumCommand = &cli.Command{
 			Name:    "level-dict",
 			Aliases: []string{"ld"},
 			Usage:   "枚举多级域名的字典文件，当level大于2时候使用，不填则会默认",
-			Value:   "config/subdomain.txt",
+			Value:   "",
 		},
 	}...),
 	Action: func(c *cli.Context) error {
