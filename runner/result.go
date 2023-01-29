@@ -14,7 +14,7 @@ func (r *runner) handleResult() {
 			continue
 		}
 		var m1 = map[string]interface{}{"ip": result.Answers, "subdomain": result.Subdomain, "tags": "subdomain"}
-		util.PushLog(&m1)
+		go util.PushLog(&m1)
 		for _, out := range r.options.Writer {
 			_ = out.WriteDomainResult(result)
 		}
