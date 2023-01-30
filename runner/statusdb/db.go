@@ -1,7 +1,6 @@
 package statusdb
 
 import (
-	"fmt"
 	"github.com/dgraph-io/badger"
 	util "github.com/hktalent/go-utils"
 	"sync/atomic"
@@ -63,7 +62,7 @@ func (r *StatusDb) Scan(f func(key string, value Item) error) {
 			item := it.Item()
 			k := item.Key()
 			err := item.Value(func(v []byte) error {
-				fmt.Printf("key=%s, value=%s\n", k, v)
+				//fmt.Printf("key=%s, value=%s\n", k, v)
 				var itm = Item{}
 				if nil == util.Json.Unmarshal(v, &itm) {
 					f(string(k), itm)
