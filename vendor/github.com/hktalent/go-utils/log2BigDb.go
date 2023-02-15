@@ -9,7 +9,6 @@ func SendEsLog(m1 interface{}) {
 	}
 	szId := "xxx"
 	SendReq(&m1, szId, ESaveType(GetVal("toolType")))
-
 }
 
 var bOk = make(chan struct{})
@@ -33,15 +32,16 @@ func DoSaves() {
 
 func PushLog(o interface{}) {
 	oR <- o
-	if 5000 <= len(oR) {
-		bDo <- struct{}{}
-	}
 }
 
 func DoRunning() {
 	defer DoSaves()
 	for {
 		select {
+		case <-oR:
+			if 5000 <= len(oR) {
+				bDo <- struct{}{}
+			}
 		case <-bOk:
 			return
 		case <-bDo:
@@ -55,6 +55,5 @@ func CloseLogBigDb() {
 	close(bOk)
 	defer func() {
 		close(bDo)
-		close(oR)
 	}()
 }
