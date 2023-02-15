@@ -92,6 +92,7 @@ func Pack32BinaryIP4(ip4Address string) string {
 var PubIp *map[string]interface{}
 
 // 当前ip,自动跳过socks proxy
+// X-Limit: current_qps=1; limit_qps=50; current_pv=10197; limit_pv=1000000
 func GetIp() *map[string]interface{} {
 	if nil != PubIp && 0 < len(*PubIp) {
 		return PubIp
