@@ -124,7 +124,7 @@ echo "baidu.com"|./ksubdomain e --stdin
 # How ...
 - pcap打开失败:enxx: You don't have permission to capture on that device ((cannot open BPF device) /dev/bpf0: Permission denied)
 ```
-go build -o ksubdomain main.go
+go build -o ksubdomain main.go;cp ksubdomain ~/go/bin/ 
 sudo chgrp staff /dev/bpf*
 cat $HOME/MyWork/bounty-targets-data/data/hackerone_data.json|jq ".[].targets.in_scope[0].asset_identifier"|grep -v 'null'
 cat $HOME/MyWork/bounty-targets-data/data/hackerone_data.json|jq ".[].targets.in_scope[0].asset_identifier"|grep '"\*\.'|sed 's/"//g'|sed 's/^\*\.//g' >lists.txt
