@@ -9,10 +9,12 @@ import (
 	"time"
 
 	"github.com/pion/dtls/v2"
+	dtlsElliptic "github.com/pion/dtls/v2/pkg/crypto/elliptic"
 	"github.com/pion/ice/v2"
 	"github.com/pion/logging"
-	"github.com/pion/transport/packetio"
-	"github.com/pion/transport/vnet"
+	"github.com/pion/transport/v2"
+	"github.com/pion/transport/v2/packetio"
+	"github.com/pion/transport/v2/vnet"
 	"golang.org/x/net/proxy"
 )
 
@@ -55,7 +57,9 @@ type SettingEngine struct {
 		SRTCP *uint
 	}
 	dtls struct {
-		retransmissionInterval time.Duration
+		insecureSkipHelloVerify bool
+		retransmissionInterval  time.Duration
+		ellipticCurves          []dtlsElliptic.Curve
 	}
 	sctp struct {
 		maxReceiveBufferSize uint32
@@ -65,7 +69,7 @@ type SettingEngine struct {
 	disableCertificateFingerprintVerification bool
 	disableSRTPReplayProtection               bool
 	disableSRTCPReplayProtection              bool
-	vnet                                      *vnet.Net
+	net                                       transport.Net
 	BufferFactory                             func(packetType packetio.BufferPacketType, ssrc uint32) io.ReadWriteCloser
 	LoggerFactory                             logging.LoggerFactory
 	iceTCPMux                                 ice.TCPMux
@@ -99,9 +103,18 @@ func (e *SettingEngine) SetSRTPProtectionProfiles(profiles ...dtls.SRTPProtectio
 }
 
 // SetICETimeouts sets the behavior around ICE Timeouts
-// * disconnectedTimeout is the duration without network activity before an Agent is considered disconnected. Default is 5 Seconds
-// * failedTimeout is the duration without network activity before an Agent is considered failed after disconnected. Default is 25 Seconds
-// * keepAliveInterval is how often the ICE Agent sends extra traffic if there is no activity, if media is flowing no traffic will be sent. Default is 2 seconds
+//
+// disconnectedTimeout:
+//
+//	Duration without network activity before an Agent is considered disconnected. Default is 5 Seconds
+//
+// failedTimeout:
+//
+//	Duration without network activity before an Agent is considered failed after disconnected. Default is 25 Seconds
+//
+// keepAliveInterval:
+//
+//	How often the ICE Agent sends extra traffic if there is no activity, if media is flowing no traffic will be sent. Default is 2 seconds
 func (e *SettingEngine) SetICETimeouts(disconnectedTimeout, failedTimeout, keepAliveInterval time.Duration) {
 	e.timeout.ICEDisconnectedTimeout = &disconnectedTimeout
 	e.timeout.ICEFailedTimeout = &failedTimeout
@@ -170,7 +183,7 @@ func (e *SettingEngine) SetIPFilter(filter func(net.IP) bool) {
 
 // SetNAT1To1IPs sets a list of external IP addresses of 1:1 (D)NAT
 // and a candidate type for which the external IP address is used.
-// This is useful when you are host a server using Pion on an AWS EC2 instance
+// This is useful when you host a server using Pion on an AWS EC2 instance
 // which has a private address, behind a 1:1 DNAT with a public IP (e.g.
 // Elastic IP). In this case, you can give the public IP address so that
 // Pion will use the public IP address in its candidate instead of the private
@@ -179,10 +192,12 @@ func (e *SettingEngine) SetIPFilter(filter func(net.IP) bool) {
 // Two types of candidates are supported:
 //
 // ICECandidateTypeHost:
-//		The public IP address will be used for the host candidate in the SDP.
+//
+//	The public IP address will be used for the host candidate in the SDP.
+//
 // ICECandidateTypeSrflx:
-//		A server reflexive candidate with the given public IP address will be added
-// to the SDP.
+//
+//	A server reflexive candidate with the given public IP address will be added to the SDP.
 //
 // Please note that if you choose ICECandidateTypeHost, then the private IP address
 // won't be advertised with the peer. Also, this option cannot be used along with mDNS.
@@ -207,9 +222,12 @@ func (e *SettingEngine) SetIncludeLoopbackCandidate(include bool) {
 // may be useful when interacting with non-compliant clients or debugging issues.
 //
 // DTLSRoleActive:
-// 		Act as DTLS Client, send the ClientHello and starts the handshake
+//
+//	Act as DTLS Client, send the ClientHello and starts the handshake
+//
 // DTLSRolePassive:
-// 		Act as DTLS Server, wait for ClientHello
+//
+//	Act as DTLS Server, wait for ClientHello
 func (e *SettingEngine) SetAnsweringDTLSRole(role DTLSRole) error {
 	if role != DTLSRoleClient && role != DTLSRoleServer {
 		return errSettingEngineSetAnsweringDTLSRole
@@ -224,8 +242,17 @@ func (e *SettingEngine) SetAnsweringDTLSRole(role DTLSRole) error {
 // VNet is a virtual network layer for Pion, allowing users to simulate
 // different topologies, latency, loss and jitter. This can be useful for
 // learning WebRTC concepts or testing your application in a lab environment
+// Deprecated: Please use SetNet()
 func (e *SettingEngine) SetVNet(vnet *vnet.Net) {
-	e.vnet = vnet
+	e.SetNet(vnet)
+}
+
+// SetNet sets the Net instance that is passed to pion/ice
+//
+// Net is an network interface layer for Pion, allowing users to replace
+// Pions network stack with a custom implementation.
+func (e *SettingEngine) SetNet(net transport.Net) {
+	e.net = net
 }
 
 // SetICEMulticastDNSMode controls if pion/ice queries and generates mDNS ICE Candidates
@@ -323,6 +350,19 @@ func (e *SettingEngine) SetReceiveMTU(receiveMTU uint) {
 // SetDTLSRetransmissionInterval sets the retranmission interval for DTLS.
 func (e *SettingEngine) SetDTLSRetransmissionInterval(interval time.Duration) {
 	e.dtls.retransmissionInterval = interval
+}
+
+// SetDTLSInsecureSkipHelloVerify sets the skip HelloVerify flag for DTLS.
+// If true and when acting as DTLS server, will allow client to skip hello verify phase and
+// receive ServerHello after initial ClientHello. This will mean faster connect times,
+// but will have lower DoS attack resistance.
+func (e *SettingEngine) SetDTLSInsecureSkipHelloVerify(skip bool) {
+	e.dtls.insecureSkipHelloVerify = skip
+}
+
+// SetDTLSEllipticCurves sets the elliptic curves for DTLS.
+func (e *SettingEngine) SetDTLSEllipticCurves(ellipticCurves ...dtlsElliptic.Curve) {
+	e.dtls.ellipticCurves = ellipticCurves
 }
 
 // SetSCTPMaxReceiveBufferSize sets the maximum receive buffer size.

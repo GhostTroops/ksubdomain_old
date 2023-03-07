@@ -2,6 +2,7 @@ package go_utils
 
 import (
 	"fmt"
+	"hash/fnv"
 	"math/rand"
 	"strings"
 	"time"
@@ -15,6 +16,13 @@ func Convert2Arr(a []interface{}) []string {
 		a1 = append(a1, fmt.Sprintf("%v", x))
 	}
 	return a1
+}
+
+// 获取字符串的hash
+func GetStrHash(s string) uint64 {
+	h := fnv.New64a()
+	h.Write([]byte(s))
+	return h.Sum64()
 }
 
 /*
