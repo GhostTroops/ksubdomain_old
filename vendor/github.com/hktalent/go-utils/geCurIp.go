@@ -190,6 +190,12 @@ func GetFromIplocation() *map[string]interface{} {
 // 当前ip,自动跳过socks proxy
 // X-Limit: current_qps=1; limit_qps=50; current_pv=10197; limit_pv=1000000
 func GetIp() *map[string]interface{} {
+	szIp := GetPublicIp()
+	if nil != Cache1 {
+		if oM, err := GetAny[map[string]interface{}](szIp); nil == err && 0 < len(oM) {
+			return &oM
+		}
+	}
 	if nil != PubIp && 0 < len(*PubIp) {
 		return PubIp
 	}
@@ -228,5 +234,6 @@ func GetIp() *map[string]interface{} {
 		}
 	}
 	PubIp = &m1
+	PutAny[map[string]interface{}](szIp, m1)
 	return PubIp
 }
