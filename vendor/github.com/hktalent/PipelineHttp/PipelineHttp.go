@@ -309,6 +309,9 @@ func (r *PipelineHttp) testHttp2(szUrl001 string) {
 					}
 				} else if a1 := resp.Header["Alt-Svc"]; 0 < len(a1) && strings.Contains(a1[0], "h3=\"") {
 					r.Client = r.GetClient4Http3()
+				} else if resp.Proto == "HTTP/2.0" {
+					r.UseHttp2 = true
+					r.Client = c1
 				}
 				r.ErrLimit = 99999999
 			} else {
@@ -318,7 +321,7 @@ func (r *PipelineHttp) testHttp2(szUrl001 string) {
 	}
 }
 
-// more see test/main.go
+// more see cmd/main.go
 func (r *PipelineHttp) doDirsPrivate(szUrl string, dirs []string, nThread int, fnCbk func(resp *http.Response, err error, szU string)) {
 	c02 := make(chan struct{}, nThread)
 	defer close(c02)
