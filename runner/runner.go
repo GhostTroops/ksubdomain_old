@@ -14,6 +14,7 @@ import (
 	"github.com/hktalent/ksubdomain/runner/statusdb"
 	"github.com/phayes/freeport"
 	"go.uber.org/ratelimit"
+	"log"
 	"math"
 	"math/rand"
 	"os"
@@ -65,6 +66,7 @@ func New(opt *options.Options) (*runner, error) {
 		}
 		gologger.Infof("Special DNS:%s\n", core.SliceToString(keys))
 	}
+	log.Println("opt.EtherInfo.Device: ", opt.EtherInfo.Device)
 	r.handle, err = device.PcapInit(opt.EtherInfo.Device)
 	if err != nil {
 		return nil, err
