@@ -176,3 +176,18 @@ ksubdomain只需要1分半，速度远远比massdns、dnsx快~
 - 从 Masscan, Zmap 源码分析到开发实践 <https://paper.seebug.org/1052/>
 - ksubdomain 无状态域名爆破工具介绍 <https://paper.seebug.org/1325/>
 - [ksubdomain与massdns的对比](https://mp.weixin.qq.com/s?__biz=MzU2NzcwNTY3Mg==&mid=2247484471&idx=1&sn=322d5db2d11363cd2392d7bd29c679f1&chksm=fc986d10cbefe406f4bda22f62a16f08c71f31c241024fc82ecbb8e41c9c7188cfbd71276b81&token=76024279&lang=zh_CN#rd) 
+
+
+# Communication group (WeChat, QQ，Tg)
+|Wechat|Or|QQchat|Or|Tg|
+|---|---|---|--- |--- |
+| <img width=166 src=https://github.com/hktalent/scan4all/blob/main/static/wcq.JPG> || <img width=166 src=https://github.com/hktalent/scan4all/blob/main/static/qqc.jpg> || <img width=166 src=https://github.com/hktalent/sall/blob/main/static/tg.jpg> |
+
+
+## 💖Star
+[![Stargazers over time](https://starchart.cc/hktalent/ksubdomain.svg)](https://starchart.cc/hktalent/ksubdomain)
+
+# Donation
+| Wechat Pay | AliPay | Paypal | BTC Pay |BCH Pay |
+| --- | --- | --- | --- | --- |
+|<img src=https://raw.githubusercontent.com/hktalent/myhktools/main/md/wc.png>|<img width=166 src=https://raw.githubusercontent.com/hktalent/myhktools/main/md/zfb.png>|[paypal](https://www.paypal.me/pwned2019) **miracletalent@gmail.com**|<img width=166 src=https://raw.githubusercontent.com/hktalent/myhktools/main/md/BTC.png>|<img width=166 src=https://raw.githubusercontent.com/hktalent/myhktools/main/md/BCH.jpg>|
