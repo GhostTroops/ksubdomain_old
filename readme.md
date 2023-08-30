@@ -1,12 +1,18 @@
+[![Twitter](https://img.shields.io/twitter/url/http/Hktalent3135773.svg?style=social)](https://twitter.com/intent/follow?screen_name=Hktalent3135773) [![Follow on Twitter](https://img.shields.io/twitter/follow/Hktalent3135773.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=Hktalent3135773) [![GitHub Followers](https://img.shields.io/github/followers/hktalent.svg?style=social&label=Follow)](https://github.com/hktalent/)
+[![Top Langs](https://profile-counter.glitch.me/hktalent/count.svg)](https://51pwn.com)
+
 (该仓库为二次集成开发、分布式、多任务而重构)
 <img width="851" alt="Screenshot 2023-01-13 at 19 13 58" src="https://user-images.githubusercontent.com/18223385/212307600-97a84f14-4660-4ad6-a835-7811f6dcd87d.png">
 （VIP user https://51pwn.com）
 ## 特性和Tips
+- 2023-04-03
+   * 合并 https://codeload.github.com/n0kovo/n0kovo_subdomains/zip/refs/heads/main 字典到 config/subdomain.txt,并优化其中无效数据
+   * 字典数量 累计 3065536 【306万+】个
 - 2023-01-13
-    * 增加结果自动记录大数据搜索引擎
+    * 增加结果自动记录大数据搜索引擎(config/config.json)
     * 所有异步优化到可控线程池
     * 增加字典 -f 默认字典 config/subdomain.txt，包含了 data 下两个字典的合并、去重
-    * 优化内存开销，降低到600M内，修复原来版本内存泄漏的bug--扫描结果超过200万后内存泄漏到 > 30G
+    * 优化内存开销，降低到600M内，修复原来版本内存泄漏的bug--原版扫描结果超过200万后内存泄漏到 > 30G
   
 ![](image.gif)
 ## 安装
