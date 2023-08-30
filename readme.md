@@ -181,7 +181,7 @@ ksubdomain只需要1分半，速度远远比massdns、dnsx快~
 # Communication group (WeChat, QQ，Tg)
 |Wechat|Or|QQchat|Or|Tg|
 |---|---|---|--- |--- |
-| <img width=166 src=https://github.com/hktalent/scan4all/blob/main/static/wcq.JPG> || <img width=166 src=https://github.com/hktalent/scan4all/blob/main/static/qqc.jpg> || <img width=166 src=https://github.com/hktalent/sall/blob/main/static/tg.jpg> |
+| <img width=166 src=https://github.com/hktalent/scan4all/blob/main/static/wcq.JPG> || <img width=166 src=https://github.com/hktalent/scan4all/blob/main/static/qqc.jpg> || <img width=166 src=https://github.com/hktalent/scan4all/blob/main/static/tg.jpg> |
 
 
 ## 💖Star
