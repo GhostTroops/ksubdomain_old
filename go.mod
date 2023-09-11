@@ -14,7 +14,9 @@ require (
 	go.uber.org/ratelimit v0.3.0
 	golang.org/x/crypto v0.13.0
 	gopkg.in/yaml.v3 v3.0.1
+)
 
+require (
 	github.com/AndreasBriese/bbloom v0.0.0-20190825152654-46b345b51c96 // indirect
 	github.com/antchfx/xpath v1.2.4 // indirect
 	github.com/apex/log v1.9.0 // indirect
