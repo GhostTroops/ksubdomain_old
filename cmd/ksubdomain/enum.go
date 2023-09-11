@@ -174,6 +174,15 @@ var enumCommand = &cli.Command{
 			writer = append(writer, fileWriter)
 
 		}
+		if c.Bool("json") {
+			fileWriter, err := output.NewJsonOutImp(c.String("output"), onlyDomain, true)
+			if err != nil {
+				gologger.Fatalf(err.Error())
+			}
+			writer = append(writer, fileWriter)
+
+		}
+
 		if c.Bool("not-print") {
 			processBar = nil
 		}

@@ -15,8 +15,6 @@ import (
 	"golang.org/x/sys/windows/registry"
 )
 
-type Warnings = common.Warnings
-
 var (
 	procGetDiskFreeSpaceExW     = common.Modkernel32.NewProc("GetDiskFreeSpaceExW")
 	procGetLogicalDriveStringsW = common.Modkernel32.NewProc("GetLogicalDriveStringsW")
@@ -52,6 +50,7 @@ func init() {
 	key, err := registry.OpenKey(registry.LOCAL_MACHINE, `SYSTEM\CurrentControlSet\Services\PartMgr`, registry.SET_VALUE)
 	if err == nil {
 		key.SetDWordValue("EnableCounterForIoctl", 1)
+		key.Close()
 	}
 }
 
@@ -87,20 +86,22 @@ func PartitionsWithContext(ctx context.Context, all bool) ([]PartitionStat, erro
 	warnings := Warnings{
 		Verbose: true,
 	}
-	var ret []PartitionStat
-	retChan := make(chan []PartitionStat)
-	errChan := make(chan error)
-	defer close(retChan)
-	defer close(errChan)
 
-	lpBuffer := make([]byte, 254)
+	var errLogicalDrives error
+	retChan := make(chan PartitionStat)
+	quitChan := make(chan struct{})
+	defer close(quitChan)
 
-	f := func() {
+	getPartitions := func() {
+		defer close(retChan)
+
+		lpBuffer := make([]byte, 254)
+
 		diskret, _, err := procGetLogicalDriveStringsW.Call(
 			uintptr(len(lpBuffer)),
 			uintptr(unsafe.Pointer(&lpBuffer[0])))
 		if diskret == 0 {
-			errChan <- err
+			errLogicalDrives = err
 			return
 		}
 		for _, v := range lpBuffer {
@@ -146,27 +147,37 @@ func PartitionsWithContext(ctx context.Context, all bool) ([]PartitionStat, erro
 						opts = append(opts, "compress")
 					}
 
-					d := PartitionStat{
+					select {
+					case retChan <- PartitionStat{
 						Mountpoint: path,
 						Device:     path,
-						Fstype:     string(bytes.Replace(lpFileSystemNameBuffer, []byte("\x00"), []byte(""), -1)),
+						Fstype:     string(bytes.ReplaceAll(lpFileSystemNameBuffer, []byte("\x00"), []byte(""))),
 						Opts:       opts,
+					}:
+					case <-quitChan:
+						return
 					}
-					ret = append(ret, d)
 				}
 			}
 		}
-		retChan <- ret
 	}
 
-	go f()
-	select {
-	case err := <-errChan:
-		return ret, err
-	case ret := <-retChan:
-		return ret, warnings.Reference()
-	case <-ctx.Done():
-		return ret, ctx.Err()
+	go getPartitions()
+
+	var ret []PartitionStat
+	for {
+		select {
+		case p, ok := <-retChan:
+			if !ok {
+				if errLogicalDrives != nil {
+					return ret, errLogicalDrives
+				}
+				return ret, warnings.Reference()
+			}
+			ret = append(ret, p)
+		case <-ctx.Done():
+			return ret, ctx.Err()
+		}
 	}
 }
 
