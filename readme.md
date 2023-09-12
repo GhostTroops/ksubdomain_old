@@ -191,3 +191,9 @@ ksubdomain只需要1分半，速度远远比massdns、dnsx快~
 | Wechat Pay | AliPay | Paypal | BTC Pay |BCH Pay |
 | --- | --- | --- | --- | --- |
 |<img src=https://raw.githubusercontent.com/hktalent/myhktools/main/md/wc.png>|<img width=166 src=https://raw.githubusercontent.com/hktalent/myhktools/main/md/zfb.png>|[paypal](https://www.paypal.me/pwned2019) **miracletalent@gmail.com**|<img width=166 src=https://raw.githubusercontent.com/hktalent/myhktools/main/md/BTC.png>|<img width=166 src=https://raw.githubusercontent.com/hktalent/myhktools/main/md/BCH.jpg>|
+
+<!--
+cat $HOME/MyWork/bug-bounty/data/bounty-targets-data/data/hackerone_data.json|jq '.[].targets.in_scope[].asset_identifier'|grep -E '\*|https:\/\/'|grep -E "\*\."|tr ', ' '\n'|tr -d '"' |sort -u|sed -E 's/http(s)?:\/\/\*/\*/g' |sed -E 's/\/.*$|\*$//g'>$HOME/MyWork/ksubdomain/hk1.txt
+
+
+-->

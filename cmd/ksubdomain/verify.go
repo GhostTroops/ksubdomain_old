@@ -54,11 +54,6 @@ var commonFlags = []cli.Flag{
 		Usage: "输出格式为csv",
 		Value: false,
 	},
-	&cli.BoolFlag{
-		Name:  "json",
-		Usage: "输出格式为json",
-		Value: false,
-	},
 	&cli.IntFlag{
 		Name:  "retry",
 		Usage: "重试次数,当为-1时将一直重试",
@@ -92,7 +87,6 @@ var commonFlags = []cli.Flag{
 		Value: "a",
 	},
 }
-
 var verifyCommand = &cli.Command{
 	Name:    runner.VerifyType,
 	Aliases: []string{"v"},

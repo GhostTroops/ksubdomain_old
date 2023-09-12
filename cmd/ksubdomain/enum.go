@@ -15,7 +15,78 @@ import (
 	"github.com/urfave/cli/v2"
 	"math/rand"
 	"os"
+	"strings"
 )
+
+/*
+兼容，前后有 * 情况
+一般来说,常见的域名后缀有:
+.com - 商业组织
+.net - 网络基础设施
+.org - 非营利组织
+.gov - 政府组织
+.edu - 教育机构
+.mil - 美国军方
+.int - 国际组织
+.cn - 中国
+.hk - 香港
+.tw - 台湾
+.jp - 日本
+.kr - 韩国
+.ru - 俄罗斯
+.de - 德国
+.uk - 英国
+.fr - 法国
+.io - 英属印度洋领地
+.me - 蒙特内哥罗
+.cc - 科科斯群岛
+.biz - 业务
+.info - 一般信息
+.tv - 图瓦卢
+.club - 协会组织
+.xyz - 通用
+等。还有一些新兴和国家地区的特定后缀。选择合适的域名后缀要根据网站的性质和定位来决定。
+*/
+func doName(s string) []string {
+	var a []string
+	var tlds = []string{
+		".com",
+		".net",
+		".org",
+		".gov",
+		".edu",
+		".mil",
+		".int",
+		".cn",
+		".hk",
+		".tw",
+		".jp",
+		".kr",
+		".ru",
+		".de",
+		".uk",
+		".fr",
+		".io",
+		".me",
+		".cc",
+		".biz",
+		".info",
+		".tv",
+		".club",
+		".xyz",
+	}
+	if strings.HasSuffix(s, ".*") {
+		s = s[0 : len(tlds)-2]
+		for _, x := range tlds {
+			a = append(a, s+x)
+		}
+	} else if strings.HasPrefix(s, "*.") {
+		a = append(a, s[2:])
+	} else {
+		a = append(a, s)
+	}
+	return a
+}
 
 var enumCommand = &cli.Command{
 	Name:    runner.EnumType,
@@ -29,6 +100,12 @@ var enumCommand = &cli.Command{
 			Usage:    "从文件中指定域名",
 			Required: false,
 			Value:    "",
+		},
+		&cli.BoolFlag{
+			Name:    "json",
+			Aliases: []string{"j"},
+			Usage:   "输出格式为json",
+			Value:   false,
 		},
 		&cli.StringFlag{
 			Name:     "filename",
@@ -72,7 +149,13 @@ var enumCommand = &cli.Command{
 
 		// handle domain
 		if c.String("domain") != "" {
-			domains = append(domains, c.String("domain"))
+			if util.FileExists(c.String("domain")) {
+				if data, err := os.ReadFile(c.String("domain")); nil == err {
+					domains = append(domains, strings.Split(strings.TrimSpace(string(data)), "\n")...)
+				}
+			} else {
+				domains = append(domains, c.String("domain"))
+			}
 		}
 		if c.String("domainList") != "" {
 			dl, err := core.LinesInFile(c.String("domainList"))
@@ -126,15 +209,19 @@ var enumCommand = &cli.Command{
 		util.DefaultPool.Submit(func() {
 			defer close(render)
 			for _, sub := range subdomainDict {
-				for _, domain := range domains {
-					dd := sub + "." + domain
-					render <- dd
-					if len(levelDomains) > 0 {
-						for _, sub2 := range levelDomains {
-							dd2 := sub2 + "." + dd
-							render <- dd2
+				for _, domain1 := range domains {
+					a1 := doName(domain1)
+					for _, domain := range a1 {
+						dd := sub + "." + domain
+						render <- dd
+						if len(levelDomains) > 0 {
+							for _, sub2 := range levelDomains {
+								dd2 := sub2 + "." + dd
+								render <- dd2
+							}
 						}
 					}
+
 				}
 			}
 		})
@@ -180,7 +267,6 @@ var enumCommand = &cli.Command{
 				gologger.Fatalf(err.Error())
 			}
 			writer = append(writer, fileWriter)
-
 		}
 
 		if c.Bool("not-print") {
