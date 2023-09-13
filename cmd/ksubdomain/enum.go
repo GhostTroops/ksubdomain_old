@@ -213,6 +213,7 @@ var enumCommand = &cli.Command{
 					a1 := doName(domain1)
 					for _, domain := range a1 {
 						dd := sub + "." + domain
+						//fmt.Printf("%s\r", dd)
 						render <- dd
 						if len(levelDomains) > 0 {
 							for _, sub2 := range levelDomains {
@@ -295,6 +296,7 @@ var enumCommand = &cli.Command{
 		}
 		opt.Check()
 		opt.EtherInfo = options.GetDeviceConfig()
+		//fmt.Printf("%+v\n", opt.EtherInfo)
 		ctx := context.Background()
 		r, err := runner.New(opt)
 		if err != nil {

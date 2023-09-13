@@ -7,14 +7,13 @@ import (
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
 	util "github.com/hktalent/go-utils"
-	"github.com/hktalent/ksubdomain/core"
 	"github.com/hktalent/ksubdomain/core/gologger"
 	"net"
 	"time"
 )
 
 func AutoGetDevices() *EtherTable {
-	domain := core.RandomStr(4) + ".i.hacking8.com"
+	domain := "www.baidu.com"
 	signal := make(chan *EtherTable)
 	devices, err := pcap.FindAllDevs()
 	if err != nil {
@@ -63,11 +62,11 @@ func AutoGetDevices() *EtherTable {
 						return
 					default:
 						packet, err := packetSource.NextPacket()
-						gologger.Printf(".")
 						if err != nil {
 							continue
 						}
 						if dnsLayer := packet.Layer(layers.LayerTypeDNS); dnsLayer != nil {
+							gologger.Printf(".")
 							dns, _ := dnsLayer.(*layers.DNS)
 							if !dns.QR {
 								continue
