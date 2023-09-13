@@ -23,7 +23,7 @@
    - Linux
      已经静态编译打包libpcap，无需其他操作
    - MacOS
-     自带libpcap,无需其他操作
+     自带 libpcap,无需其他操作
 3. 执行!
 ### 快速安装
 需要`go 1.17`以上版本并安装`libpcap`环境，运行以下命令

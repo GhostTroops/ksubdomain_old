@@ -1,8 +1,10 @@
 .idea
 test2
+hk1.txt
 .DbCache
 lists.txt
 ksubdomain
+*.json
 superbet.ro.json
 ksubdomain.yaml
 dist/
