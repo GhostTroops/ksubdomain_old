@@ -3,6 +3,10 @@ package core
 import (
 	"bufio"
 	"bytes"
+	"compress/gzip"
+	"errors"
+	"fmt"
+	util "github.com/hktalent/go-utils"
 	"golang.org/x/crypto/ssh/terminal"
 	"io"
 	"math/rand"
@@ -29,19 +33,40 @@ func RandInt64(min, max int64) int64 {
 
 // LinesInFile 读取文件 返回每行的数组
 func LinesInFile(fileName string) ([]string, error) {
-	result := []string{}
-	f, err := os.Open(fileName)
-	if err != nil {
+	var result []string
+	var f *os.File
+	var err error
+	var rd io.Reader
+	if !util.FileExists(fileName) {
+		s1 := strings.Replace(fileName, ".txt", ".zip", -1)
+		if util.FileExists(s1) {
+			if f, err = os.Open(s1); nil == err {
+				defer f.Close()
+				rd, err = gzip.NewReader(f)
+			}
+		} else {
+			err = errors.New("file not exists")
+		}
+	} else {
+		f, err = os.Open(fileName)
+		if err == nil {
+			rd = f
+			defer f.Close()
+		}
+	}
+	if nil != err {
 		return result, err
 	}
-	defer f.Close()
-	scanner := bufio.NewScanner(f)
+	scanner := bufio.NewScanner(rd)
 	scanner.Split(bufio.ScanLines)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line != "" {
 			result = append(result, line)
 		}
+	}
+	if err = scanner.Err(); nil != err {
+		fmt.Println(err)
 	}
 	return result, nil
 }
