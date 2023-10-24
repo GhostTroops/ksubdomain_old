@@ -1,9 +1,5 @@
 env:
   - GO111MODULE=on
-before:
-  hooks:
-#    - go mod tidy
-#    - .github/workflows/upx.sh
 project_name: ksubdomain
 builds:
   - id: ksubdomain-darwin
@@ -17,7 +13,7 @@ builds:
       - darwin
     goarch:
       - amd64
-      - arm64
+#      - arm64
 
 archives:
 - format: zip
