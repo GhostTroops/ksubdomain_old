@@ -49,24 +49,26 @@ type PipelineHttp struct {
 }
 
 func NewPipelineHttp(args ...map[string]interface{}) *PipelineHttp {
-	nTimeout := 60
-	nIdle := 500
+	nTimeout := 5 * 60 * time.Second
+	nIdle := 1000
+	// Timeout 这个超时是设置整个请求的超时时间,一般应该设置比IdleConnTimeout更长
+	// Timeout包含了拨号、TLS握手等时间,所以应该设置长一些。
 	x1 := &PipelineHttp{
 		ver:                   1,
 		UseHttp2:              false,
 		NoLimit:               false,
 		TestHttp:              false,
 		Buf:                   &bytes.Buffer{},
-		Timeout:               time.Duration(nTimeout) * time.Second, // 拨号、连接
-		KeepAlive:             time.Duration(nTimeout) * time.Second, // 默认值（当前为 15 秒）发送保持活动探测。
-		MaxIdleConns:          nIdle,                                 // MaxIdleConns controls the maximum number of idle (keep-alive) connections across all hosts. Zero means no limit.
-		IdleConnTimeout:       180,                                   // 不限制
-		ResponseHeaderTimeout: time.Duration(nTimeout) * time.Second, // response
-		TLSHandshakeTimeout:   time.Duration(nTimeout) * time.Second, // TLSHandshakeTimeout specifies the maximum amount of time waiting to wait for a TLS handshake. Zero means no timeout.
-		ExpectContinueTimeout: 0,                                     // 零表示没有超时，并导致正文立即发送，无需等待服务器批准
-		MaxIdleConnsPerHost:   nIdle,                                 // MaxIdleConnsPerHost, if non-zero, controls the maximum idle (keep-alive) connections to keep per-host. If zero, DefaultMaxIdleConnsPerHost is used.
-		MaxConnsPerHost:       0,                                     // 控制单个Host的最大连接总数,该值默认是0，也就是不限制，连接池里的连接能用就用，不能用创建新连接
-		ErrLimit:              10,                                    // 相同目标，累计错误10次就退出
+		Timeout:               time.Duration(nTimeout*2) * time.Second, // 拨号、连接
+		KeepAlive:             time.Duration(nTimeout) * time.Second,   // 默认值（当前为 15 秒）发送保持活动探测。
+		MaxIdleConns:          nIdle,                                   // MaxIdleConns controls the maximum number of idle (keep-alive) connections across all hosts. Zero means no limit.
+		IdleConnTimeout:       nTimeout,                                // 不限制，秒
+		ResponseHeaderTimeout: time.Duration(nTimeout) * time.Second,   // response
+		TLSHandshakeTimeout:   time.Duration(nTimeout) * time.Second,   // TLSHandshakeTimeout specifies the maximum amount of time waiting to wait for a TLS handshake. Zero means no timeout.
+		ExpectContinueTimeout: 0,                                       // 零表示没有超时，并导致正文立即发送，无需等待服务器批准
+		MaxIdleConnsPerHost:   nIdle,                                   // MaxIdleConnsPerHost, if non-zero, controls the maximum idle (keep-alive) connections to keep per-host. If zero, DefaultMaxIdleConnsPerHost is used.
+		MaxConnsPerHost:       0,                                       // 控制单个Host的最大连接总数,该值默认是0，也就是不限制，连接池里的连接能用就用，不能用创建新连接
+		ErrLimit:              10,                                      // 相同目标，累计错误10次就退出
 		ErrCount:              0,
 		IsClosed:              false,
 		SetHeader:             nil,
@@ -185,8 +187,8 @@ func (r *PipelineHttp) DoGetWithClient4SetHdNoCloseBody(client *http.Client, szU
 
 func (r *PipelineHttp) CloseResponse(resp *http.Response) {
 	if nil != resp {
+		defer resp.Body.Close()
 		io.Copy(io.Discard, resp.Body)
-		resp.Body.Close()
 	}
 }
 

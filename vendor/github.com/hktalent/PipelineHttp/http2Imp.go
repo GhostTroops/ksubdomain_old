@@ -100,6 +100,9 @@ func (r *PipelineHttp) GetTransport4http2() http.RoundTripper {
 	if r.UseHttp2 {
 		var tr http.RoundTripper = &http2.Transport{
 			//TLSClientConfig: r.tlsConfig(),
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: true, //跳过证书验证
+			},
 			DialTLS:                    r.dialT(r.Buf),
 			DisableCompression:         false,
 			AllowHTTP:                  true,

@@ -428,9 +428,15 @@ func Mkdirs(s string) {
 	os.MkdirAll(s, os.ModePerm)
 }
 
+func isMap(a interface{}) bool {
+	t := reflect.TypeOf(a)
+	return t.Kind() == reflect.Map && t.Key().Kind() == reflect.String
+}
+
 // 获取 Sha1
 func GetSha1(a ...interface{}) string {
 	h := sha1.New()
+	//if isMap(a[0]) { // map嵌套map 确保顺序，相同数据map得到相同的sha1
 	if data, err := Json.Marshal(a); nil == err {
 		h.Write(data)
 	} else {
@@ -473,7 +479,7 @@ func TestRepeat4Save(key string, a ...interface{}) (interface{}, bool) {
 // 关闭cache
 func CloseCache() {
 	if nil != noRpt {
-		log.Println("start clear noRpt cache")
+		//log.Println("start clear noRpt cache")
 		noRpt.Clear()
 		noRpt.Stop()
 		noRpt = nil
