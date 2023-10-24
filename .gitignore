@@ -6,6 +6,7 @@ config/subdomain.txt
 lists.txt
 ksubdomain
 *.json
+*.txt
 superbet.ro.json
 ksubdomain.yaml
 dist/
