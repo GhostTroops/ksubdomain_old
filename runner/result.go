@@ -11,9 +11,15 @@ func (r *runner) handleResult() {
 	var szSkp = "0.0.0.1"
 	//log.Println("r.options.Writer len:", len(r.options.Writer))
 	for result := range r.recver {
-		if 1 == len(result.Answers) && szSkp == result.Answers[0] || -1 < strings.Index(result.Subdomain, szSkp) {
+		if -1 < strings.Index(result.Subdomain, szSkp) {
 			continue
 		}
+		for _, x := range result.Answers {
+			if x == szSkp {
+				return
+			}
+		}
+
 		var m1 = map[string]interface{}{"ip": result.Answers, "subdomain": result.Subdomain, "tags": "subdomain"}
 		//KvCc.KvCc.Put(result.Subdomain, []byte("1"))
 
