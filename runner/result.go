@@ -2,7 +2,6 @@ package runner
 
 import (
 	util "github.com/hktalent/go-utils"
-	"log"
 	"strings"
 )
 
@@ -10,7 +9,7 @@ func (r *runner) handleResult() {
 	go util.DoRunning()
 	defer util.CloseLogBigDb()
 	var szSkp = "0.0.0.1"
-	log.Println("r.options.Writer len:", len(r.options.Writer))
+	//log.Println("r.options.Writer len:", len(r.options.Writer))
 	for result := range r.recver {
 		if 1 == len(result.Answers) && szSkp == result.Answers[0] || -1 < strings.Index(result.Subdomain, szSkp) {
 			continue
