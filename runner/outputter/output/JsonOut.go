@@ -9,18 +9,16 @@ import (
 
 type JsonOutImp struct {
 	FileOutPut
-	IsCsv bool
 }
 
-func NewJsonOutImp(filename string, onlyDomain, IsCsv bool) (*CsvOutImp, error) {
+func NewJsonOutImp(filename string, onlyDomain bool) (*JsonOutImp, error) {
 	output, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0664)
 	if err != nil {
 		return nil, err
 	}
-	f := new(CsvOutImp)
+	f := new(JsonOutImp)
 	f.output = output
 	f.onlyDomain = onlyDomain
-	f.IsCsv = IsCsv
 	return f, err
 }
 func (f *JsonOutImp) WriteDomainResult(domain result.Result) error {
@@ -28,6 +26,7 @@ func (f *JsonOutImp) WriteDomainResult(domain result.Result) error {
 	var err error
 	if data, err := util.Json.Marshal(domain); nil == err {
 		_, err = buf.Write(data)
+		buf.Write([]byte("\n"))
 	}
 	buf.Flush()
 	return err

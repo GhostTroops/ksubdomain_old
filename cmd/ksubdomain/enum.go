@@ -255,7 +255,7 @@ var enumCommand = &cli.Command{
 
 		}
 		if c.Bool("json") {
-			fileWriter, err := output.NewJsonOutImp(c.String("output"), onlyDomain, true)
+			fileWriter, err := output.NewJsonOutImp(c.String("output"), onlyDomain)
 			if err != nil {
 				gologger.Fatalf(err.Error())
 			}
