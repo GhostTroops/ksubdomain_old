@@ -18,6 +18,7 @@ import (
 	"math"
 	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -50,9 +51,15 @@ type runner struct {
 
 func init() {
 	rand.Seed(time.Now().Unix())
+	if n := os.Getenv("CNum"); "" != n {
+		if i, err := strconv.Atoi(n); nil == err {
+			CNum = i
+		}
+	}
 }
 
-const CNum = 64 * 4
+// 默认 百万 并发
+var CNum = 100 * 10000
 
 func New(opt *options.Options) (*runner, error) {
 	var err error
@@ -78,8 +85,8 @@ func New(opt *options.Options) (*runner, error) {
 	// 根据发包总数和timeout时间来分配每秒速度
 	allPacket := opt.DomainTotal
 	calcLimit := float64(allPacket/opt.TimeOut) * 0.85
-	if calcLimit < 5000 {
-		calcLimit = 5000
+	if calcLimit < float64(CNum) {
+		calcLimit = float64(CNum)
 	}
 	limit := int(math.Min(calcLimit, float64(opt.Rate)))
 	r.limit = ratelimit.New(limit) // per second

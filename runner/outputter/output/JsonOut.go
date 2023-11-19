@@ -25,8 +25,7 @@ func (f *JsonOutImp) WriteDomainResult(domain result.Result) error {
 	buf := bufio.NewWriter(f.output)
 	var err error
 	if data, err := util.Json.Marshal(domain); nil == err {
-		_, err = buf.Write(data)
-		buf.Write([]byte("\n"))
+		_, err = buf.Write(append(data, []byte("\n")...))
 	}
 	buf.Flush()
 	return err
