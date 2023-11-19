@@ -184,13 +184,11 @@ var enumCommand = &cli.Command{
 		}
 
 		var subdomainDict []string
-		if c.String("filename") == "" {
-			subdomainDict = core.GetDefaultSubdomainData()
+		subdomainDict, err = core.LinesInFile(c.String("filename"))
+		if err != nil {
+			gologger.Fatalf("打开文件:%s 错误:%s", c.String("filename"), err.Error())
 		} else {
-			subdomainDict, err = core.LinesInFile(c.String("filename"))
-			if err != nil {
-				gologger.Fatalf("打开文件:%s 错误:%s", c.String("filename"), err.Error())
-			}
+			core.DefaultDomainList = subdomainDict
 		}
 
 		levelDict := c.String("level-dict")
@@ -208,13 +206,14 @@ var enumCommand = &cli.Command{
 		render := make(chan string)
 		util.DefaultPool.Submit(func() {
 			defer close(render)
-			for _, sub := range subdomainDict {
-				for _, domain1 := range domains {
-					a1 := doName(domain1)
-					for _, domain := range a1 {
+			for _, domain1 := range domains {
+				a1 := doName(domain1)
+				for _, domain := range a1 {
+					for _, sub := range subdomainDict {
 						dd := sub + "." + domain
 						//fmt.Printf("%s\r", dd)
 						render <- dd
+						// 这里应该加判断，如果本级无法dns，就没有必要到第3级以上
 						if len(levelDomains) > 0 {
 							for _, sub2 := range levelDomains {
 								dd2 := sub2 + "." + dd
@@ -247,13 +246,6 @@ var enumCommand = &cli.Command{
 		}
 		onlyDomain := c.Bool("only-domain")
 
-		if c.String("output") != "" {
-			fileWriter, err := output.NewFileOutput(c.String("output"), onlyDomain)
-			if err != nil {
-				gologger.Fatalf(err.Error())
-			}
-			writer = append(writer, fileWriter)
-		}
 		if c.Bool("csv") {
 			fileWriter, err := output.NewCsvOutImp(c.String("output"), onlyDomain, true)
 			if err != nil {
@@ -264,6 +256,14 @@ var enumCommand = &cli.Command{
 		}
 		if c.Bool("json") {
 			fileWriter, err := output.NewJsonOutImp(c.String("output"), onlyDomain, true)
+			if err != nil {
+				gologger.Fatalf(err.Error())
+			}
+			writer = append(writer, fileWriter)
+		}
+
+		if c.String("output") != "" && 0 == len(writer) {
+			fileWriter, err := output.NewFileOutput(c.String("output"), onlyDomain)
 			if err != nil {
 				gologger.Fatalf(err.Error())
 			}
@@ -303,8 +303,8 @@ var enumCommand = &cli.Command{
 			gologger.Fatalf("%s\n", err.Error())
 			return nil
 		}
+		defer r.Close()
 		r.RunEnumeration(ctx)
-		r.Close()
 
 		return nil
 	},

@@ -51,6 +51,9 @@ type runner struct {
 func init() {
 	rand.Seed(time.Now().Unix())
 }
+
+const CNum = 64 * 4
+
 func New(opt *options.Options) (*runner, error) {
 	var err error
 	version := pcap.Version()
@@ -83,8 +86,8 @@ func New(opt *options.Options) (*runner, error) {
 	gologger.Infof("Domain Count:%d\n", r.options.DomainTotal)
 	gologger.Infof("Rate:%dpps\n", limit)
 
-	r.sender = make(chan string, 99)        // 协程发送缓冲
-	r.recver = make(chan result.Result, 99) // 协程接收缓冲
+	r.sender = make(chan string, CNum)        // 协程发送缓冲
+	r.recver = make(chan result.Result, CNum) // 协程接收缓冲
 
 	freePort, err := freeport.GetFreePort()
 	if err != nil {
@@ -178,11 +181,21 @@ func (r *runner) RunEnumeration(ctx context.Context) {
 }
 
 func (r *runner) Close() {
+	if r.options == nil {
+		return
+	}
+	for _, x := range r.options.Writer {
+		if nil != x {
+			x.Close()
+		}
+	}
 	close(r.recver)
 	close(r.sender)
 	r.handle.Close()
 	r.hm.Close()
+
 	if r.options.ProcessBar != nil {
 		r.options.ProcessBar.Close()
 	}
+	r.options = nil
 }

@@ -15,6 +15,8 @@ import (
 	"time"
 )
 
+//var KvCc = util.NewKvCachedb()
+
 func RandomStr(n int) string {
 	var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz1234567890")
 	rand.Seed(time.Now().UnixNano())
