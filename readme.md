@@ -5,6 +5,8 @@
 <img width="851" alt="Screenshot 2023-01-13 at 19 13 58" src="https://user-images.githubusercontent.com/18223385/212307600-97a84f14-4660-4ad6-a835-7811f6dcd87d.png">
 （VIP user https://51pwn.com）
 ## 特性和Tips
+- 2023-11-20
+   * 支持 * 前缀、后缀，或者 * 在中间的情况；后缀 来源 https://www.computerhope.com/jargon/num/domains.htm
 - 2023-04-03
    * 合并 https://codeload.github.com/n0kovo/n0kovo_subdomains/zip/refs/heads/main 字典到 config/subdomain.txt,并优化其中无效数据
    * 字典数量 累计 3065536 【306万+】个

@@ -13,10 +13,218 @@ import (
 	"github.com/hktalent/ksubdomain/runner/outputter/output"
 	"github.com/hktalent/ksubdomain/runner/processbar"
 	"github.com/urfave/cli/v2"
+	"log"
 	"math/rand"
 	"os"
 	"strings"
 )
+
+var tlds []string
+
+func init() {
+	tlds = []string{
+		".com",
+		".net",
+		".org",
+		".gov",
+		".edu",
+		".mil",
+		".int",
+		".cn",
+		".hk",
+		".tw",
+		".jp",
+		".kr",
+		".ru",
+		".de",
+		".us",
+		".uk",
+		".fr",
+		".io",
+		".me",
+		".cc",
+		".biz",
+		".info",
+		".name",
+		".tv",
+		".club",
+		".asia",
+		".xyz",
+	}
+	// https://www.computerhope.com/jargon/num/domains.htm
+	tlds = append(tlds, strings.Split(`.ac
+.ad
+.aero
+.ag
+.al
+.an
+.aq
+.arpa
+.asia
+.au
+.ax
+.az
+.ba
+.bd
+.bf
+.bh
+.biz
+.bm
+.bo
+.bs
+.bv
+.by
+.bz
+.ca
+.cc
+.cf
+.ch
+.ck
+.cm
+.co
+.com
+.cr
+.cu
+.cw
+.cy
+.cz
+.dd
+.dj
+.dm
+.dz
+.ec
+.ee
+.eh
+.es
+.eu
+.fi
+.fj
+.fm
+.fr
+.fx
+.ga
+.gd
+.gf
+.gh
+.gl
+.gn
+.gov
+.uk
+.gq
+.gs
+.gu
+.gy
+.hk
+.hn
+.ht
+.hu
+.id
+.il
+.in
+.int
+.iq
+.is
+.it
+.je
+.jo
+.jp
+.ke
+.kh
+.km
+.kp
+.kw
+.kz
+.la
+.lc
+.lk
+.ls
+.ltd
+.uk
+.lv
+.ly
+.ma
+.md
+.me
+.uk
+.mh
+.mk
+.mm
+.mo
+.mod
+.uk
+.mq
+.ms
+.mu
+.mv
+.mx
+.mz
+.na
+.nato
+.ne
+.net
+.uk
+.ng
+.ni
+.no
+.np
+.nt
+.nz
+.om
+.org
+.uk
+.pa
+.pf
+.ph
+.pl
+.pm
+.post
+.pro
+.pt
+.py
+.qa
+.re
+.rs
+.rw
+.sa
+.sc
+.sd
+.sg
+.si
+.sk
+.sm
+.so
+.ss
+.store
+.sv
+.sz
+.tc
+.tel
+.tg
+.tj
+.tl
+.tn
+.tp
+.travel
+.tv
+.tz
+.ua
+.uk
+.us
+.uz
+.va
+.ve
+.vi
+.vu
+.web
+.ws
+.xxx
+.ye
+.yu
+.za
+.zr
+.zw`, "\n")...)
+	tlds = util.RemoveDuplication_mapNoEmpy(tlds)
+}
 
 /*
 兼容，前后有 * 情况
@@ -49,32 +257,6 @@ import (
 */
 func doName(s string) []string {
 	var a []string
-	var tlds = []string{
-		".com",
-		".net",
-		".org",
-		".gov",
-		".edu",
-		".mil",
-		".int",
-		".cn",
-		".hk",
-		".tw",
-		".jp",
-		".kr",
-		".ru",
-		".de",
-		".uk",
-		".fr",
-		".io",
-		".me",
-		".cc",
-		".biz",
-		".info",
-		".tv",
-		".club",
-		".xyz",
-	}
 	if strings.HasSuffix(s, ".*") {
 		s = s[0 : len(tlds)-2]
 		for _, x := range tlds {
@@ -206,6 +388,7 @@ var enumCommand = &cli.Command{
 		render := make(chan string)
 		util.DefaultPool.Submit(func() {
 			defer close(render)
+			log.Println("domains len", len(domains))
 			for _, domain1 := range domains {
 				a1 := doName(domain1)
 				for _, domain := range a1 {
