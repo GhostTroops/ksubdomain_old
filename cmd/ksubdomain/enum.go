@@ -20,6 +20,7 @@ import (
 	"strings"
 )
 
+// https://raw.githubusercontent.com/publicsuffix/list/master/public_suffix_list.dat
 // https://github.com/publicsuffix/list/
 // https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 //
