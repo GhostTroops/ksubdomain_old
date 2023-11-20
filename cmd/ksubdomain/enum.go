@@ -210,7 +210,11 @@ var enumCommand = &cli.Command{
 				a1 := doName(domain1)
 				for _, domain := range a1 {
 					for _, sub := range subdomainDict {
-						dd := sub + "." + domain
+						var dd = sub + "." + domain
+						if -1 < strings.Index(domain, "*") {
+							dd = strings.ReplaceAll(domain, "*", sub)
+						}
+
 						//fmt.Printf("%s\r", dd)
 						render <- dd
 						// 这里应该加判断，如果本级无法dns，就没有必要到第3级以上
