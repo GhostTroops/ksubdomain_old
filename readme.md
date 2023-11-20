@@ -7,7 +7,7 @@
 ## 特性和Tips
 - 2023-11-20
    * 支持 * 前缀，或者 * 在中间的情况
-   * 支持 后缀 *，共计 643 种后缀，所以非必要，不建议 * 后缀，后缀将是 643 * 306万次迭代，后缀 来源 https://www.domain.com/domains/new-domain-extensions 
+   * 支持 后缀 *，共计 708 种后缀，所以非必要，不建议 * 后缀，后缀将是 708 * 306万次迭代，后缀 来源 https://www.domain.com/domains/new-domain-extensions 
 - 2023-04-03
    * 合并 https://codeload.github.com/n0kovo/n0kovo_subdomains/zip/refs/heads/main 字典到 config/subdomain.txt,并优化其中无效数据
    * 字典数量 累计 3065536 【306万+】个
@@ -71,6 +71,10 @@ gov.cn
 需要特别注意的是，看上去成功数为几百万，实际得到有效的会更少，因为有的域名返回的ip是"0.0.0.1"，在结果中直接过滤掉了
 ```
 cat  list.txt|./ksubdomain e -stdin --band 500m -o list_All.json -json 
+```
+other
+```
+cat $HOME/MyWork/bug-bounty/data/hk1/hk1.txt|./ksubdomain e -stdin --band 500m -o hk1.json -json
 ```
 ### 模式
 
