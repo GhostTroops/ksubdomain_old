@@ -26,7 +26,7 @@
      自带 libpcap,无需其他操作
 3. 执行!
 ### 快速安装
-需要`go 1.17`以上版本并安装`libpcap`环境，运行以下命令
+需要`go 1.21.3`以上版本并安装`libpcap`环境，运行以下命令
 ```
 go install -v github.com/hktalent/ksubdomain/cmd/ksubdomain@latest
 ```
