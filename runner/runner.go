@@ -152,6 +152,7 @@ func (r *runner) RunEnumeration(ctx context.Context) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 	util.DefaultPool.Submit(func() {
+		wg.Add(1)
 		r.recvChanel(ctx)
 	}) // 启动接收线程
 	util.DoSyncFunc(r.sendCycle)            // 发送线程

@@ -41,6 +41,7 @@ func dnsRecord2String(rr layers.DNSResourceRecord) (string, error) {
 }
 
 func (r *runner) recvChanel(ctx context.Context) error {
+	defer wg.Done()
 	var (
 		snapshotLen = 65536
 		timeout     = -1 * time.Second
@@ -86,10 +87,18 @@ func (r *runner) recvChanel(ctx context.Context) error {
 
 	var data []byte
 	var decoded []gopacket.LayerType
+	tk := time.NewTicker(30 * time.Second)
+	defer tk.Stop()
+	nc := 0
 	for {
 		select {
 		case <-ctx.Done():
 			return nil
+		case <-tk.C:
+			nc++
+			if 4 <= nc {
+				return nil
+			}
 		default:
 			data, _, err = handle.ReadPacketData()
 			if err != nil {
@@ -112,6 +121,7 @@ func (r *runner) recvChanel(ctx context.Context) error {
 			subdomain := string(dns.Questions[0].Name)
 			r.hm.Del(subdomain)
 			if dns.ANCount > 0 {
+				nc = 0
 				atomic.AddUint64(&r.successIndex, 1)
 				var answers []string
 				for _, v := range dns.Answers {
