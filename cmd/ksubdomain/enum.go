@@ -20,6 +20,7 @@ import (
 	"strings"
 )
 
+// https://github.com/publicsuffix/list/
 // https://data.iana.org/TLD/tlds-alpha-by-domain.txt
 //
 //go:embed tldsList.txt
