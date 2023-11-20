@@ -20,6 +20,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -48,6 +49,8 @@ type runner struct {
 	startTime       time.Time
 	dnsType         layers.DNSType
 }
+
+var wg sync.WaitGroup
 
 func init() {
 	rand.Seed(time.Now().Unix())
@@ -188,6 +191,7 @@ func (r *runner) RunEnumeration(ctx context.Context) {
 }
 
 func (r *runner) Close() {
+	wg.Wait()
 	if r.options == nil {
 		return
 	}

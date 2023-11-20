@@ -31,11 +31,13 @@ func (r *runner) sendCycle() {
 			v.Dns = r.choseDns(domain)
 			r.hm.Set(domain, v)
 		}
+		wg.Add(1)
 		send(domain, v.Dns, r.options.EtherInfo, r.dnsid, uint16(r.freeport), r.handle, r.dnsType)
 		atomic.AddUint64(&r.sendIndex, 1)
 	}
 }
 func send(domain string, dnsname string, ether *device.EtherTable, dnsid uint16, freeport uint16, handle *pcap.Handle, dnsType layers.DNSType) {
+	defer wg.Done()
 	DstIp := net.ParseIP(dnsname).To4()
 	eth := &layers.Ethernet{
 		SrcMAC:       ether.SrcMac.HardwareAddr(),
