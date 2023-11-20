@@ -6,8 +6,8 @@
 （VIP user https://51pwn.com）
 ## 特性和Tips
 - 2023-11-20
-   * 支持 * 前缀，或者 * 在中间的情况
-   * 支持 后缀 *，共计 708 种后缀，所以非必要，不建议 * 后缀，后缀将是 708 * 306万次迭代，后缀 来源 https://www.domain.com/domains/new-domain-extensions 
+   * 支持 【* 前缀,*.hackerone.com】，或者 * 在中间的情况
+   * 支持 【后缀 *,hackerone.*】，共计 1485 种后缀，所以非必要，不建议 * 后缀，否则将超过45亿次迭代 
 - 2023-04-03
    * 合并 https://codeload.github.com/n0kovo/n0kovo_subdomains/zip/refs/heads/main 字典到 config/subdomain.txt,并优化其中无效数据
    * 字典数量 累计 3065536 【306万+】个
