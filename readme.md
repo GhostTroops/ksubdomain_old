@@ -54,6 +54,21 @@ GLOBAL OPTIONS:
 
 ```
 
+## 一种用法
+list.txt
+内容如下，表示需要对下面的列表后缀进行遍历
+```
+com
+edu
+gov
+edu.cn
+gov.cn
+```
+命令,设定500M带宽，输出为json
+需要特别注意的是，看上去成功数为几百万，实际得到有效的会更少，因为有的域名返回的ip是"0.0.0.1"，在结果中直接过滤掉了
+```
+cat  list.txt|./ksubdomain e -stdin --band 500m -o list_All.json -json 
+```
 ### 模式
 
 **验证模式**
