@@ -7,7 +7,8 @@
 ## 特性和Tips
 - 2023-11-20
    * 支持 【* 前缀,*.hackerone.com】，或者 * 在中间的情况
-   * 支持 【后缀 *,hackerone.*】，共计 9744 种后缀，所以非必要，不建议 * 后缀，否则将超过 298 亿次迭代 
+   * 支持 【后缀 *,hackerone.*】，共计 9744 种后缀，所以非必要，不建议 * 后缀，否则将超过 298 亿次迭代
+   * 支持 【中间 *,www.paypal-*.com】
 - 2023-04-03
    * 合并 https://codeload.github.com/n0kovo/n0kovo_subdomains/zip/refs/heads/main 字典到 config/subdomain.txt,并优化其中无效数据
    * 字典数量 累计 3065536 【306万+】个
@@ -75,6 +76,15 @@ cat  list.txt|./ksubdomain e -stdin --band 500m -o list_All.json -json
 other
 ```
 cat $HOME/MyWork/bug-bounty/data/hk1/hk1.txt|./ksubdomain e -stdin --band 500m -o hk1.json -json
+cat <<EOT>/usr/local/bin/doSubdomain
+xx=`pwd`
+cd $HOME/MyWork/ksubdomain
+CNum=1000000
+./ksubdomain e -d $1 --band 500m -o $1.json -json -l 2
+mv $1.txt $xx/
+
+EOT
+chmod +x /usr/local/bin/doSubdomain
 ```
 ### 模式
 
